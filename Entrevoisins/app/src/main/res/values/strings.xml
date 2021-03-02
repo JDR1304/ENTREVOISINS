@@ -4,11 +4,11 @@
     <string name="tab_favorites_title">Favorites</string>
     <string name="activity_new_neighbour">New neighbour</string>
     <!-- Ajouté par JDR-->
-    <string name="first_name">first_name</string>
-    <string name="long_latin">long_latin</string>
-    <string name="phone_number">phone_number</string>
+    <string name="first_name">first name</string>
+    <string name="long_latin">long latin</string>
+    <string name="phone_number">phone number</string>
     <string name="address">address</string>
     <string name="localisation">localisation</string>
-    <string name="details_profil">details_profil</string>
-    <string name="about_me">about_me</string>
+    <string name="details_profil">Details profil</string>
+    <string name="about_me">About me</string>
 </resources>

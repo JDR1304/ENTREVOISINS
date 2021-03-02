@@ -28,6 +28,9 @@ public class Neighbour  implements Parcelable {
     /** About me */
     private String aboutMe;
 
+    /** favorite ajout JDR*/
+    private boolean favorite;
+
     /** Parcelable Key for Neighbour **/
     public static final String NEIGHBOUR_KEY = "NEIGHBOUR_KEY";
 
@@ -96,6 +99,15 @@ public class Neighbour  implements Parcelable {
         this.aboutMe = aboutMe;
     }
 
+    //getter et setter du boolean favorite
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     // Methodes Parcelable implémentées
 
@@ -106,6 +118,7 @@ public class Neighbour  implements Parcelable {
         address = in.readString();
         phoneNumber = in.readString();
         aboutMe = in.readString();
+
     }
 
     public static final Creator<Neighbour> CREATOR = new Creator<Neighbour>() {
@@ -146,5 +159,7 @@ public class Neighbour  implements Parcelable {
         parcel.writeString(address);
         parcel.writeString(phoneNumber);
         parcel.writeString(aboutMe);
+        parcel.writeInt(favorite ? 1 : 0);
+
     }
 }
