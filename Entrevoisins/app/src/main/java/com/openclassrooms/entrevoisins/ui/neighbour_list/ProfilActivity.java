@@ -4,7 +4,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,17 +29,15 @@ public class ProfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
 
-        getCurrentNeighbour();
+        neighbour = getCurrentNeighbour();
         initViews();
-
         updateStarColor(neighbour.isFavorite());
 
         mFab.setOnClickListener(v -> {
-
+            //Change the value of Favorite at each click on the item
             neighbour.setFavorite(!neighbour.isFavorite());
-            // mettre les actions qui vont ajouter la vue en favoris
+            // Set the right color depending on the value of Favorite
             updateStarColor(neighbour.isFavorite());
-
         });
 
     }
@@ -54,38 +52,39 @@ public class ProfilActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        //Pour mettre le bouton de retour par defaut android
+        //Set default action bar
         setSupportActionBar(findViewById(R.id.toolbar));
-        if (getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         mFab = findViewById(R.id.profil_activity_fab);
         ((TextView) findViewById(R.id.profil_activity_first_name)).setText(neighbour.getName());
-        ((TextView)findViewById(R.id.profil_activity_localisation)).setText(neighbour.getAddress());
-        ((TextView)findViewById(R.id.profil_activity_phone_number)).setText(neighbour.getPhoneNumber());
-        ((TextView)findViewById(R.id.profil_activity_details_profil)).setText(neighbour.getAboutMe());
+        ((TextView) findViewById(R.id.profil_activity_localisation)).setText(neighbour.getAddress());
+        ((TextView) findViewById(R.id.profil_activity_phone_number)).setText(neighbour.getPhoneNumber());
+        ((TextView) findViewById(R.id.profil_activity_details_profil)).setText(neighbour.getAboutMe());
         Glide.with(this)
                 .load(neighbour.getAvatarUrl())
                 .into((ImageView) findViewById(R.id.profil_activity_toolbarImage));
 
-        // Permet de mettre le nom dans la toolbar exemple Caroline
+        // Set the name in the toolbar (exemple Caroline)
         ((CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar)).setTitle(neighbour.getName());
     }
 
-    private void getCurrentNeighbour() {
-        //Quand je passe seulement l'id
-        long id = getIntent().getLongExtra(NEIGHBOUR_KEY, 0);// recuperation id
-        NeighbourApiService apiService = DI.getNeighbourApiService();// récuperation list + les methodes de DummyNeighbourApiService
-        // Comparer ma liste avec mon id
-        neighbour = apiService.getNeighbourById(id);
+    private Neighbour getCurrentNeighbour() {
+        // get back the id from MyNeighbourRecyclerViewAdapter
+        long id = getIntent().getLongExtra(NEIGHBOUR_KEY, 0);
+        // get the list from dependency injection class DI
+        NeighbourApiService apiService = DI.getNeighbourApiService();
+        // Find the right neighbour in the list and give the value to neighbour attribute
+        return apiService.getNeighbourById(id);
     }
 
-    // Permet de revenir sur mon display home
+    // Allow to come back to display home
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home : {
+            case android.R.id.home: {
                 finish();
                 return true;
             }

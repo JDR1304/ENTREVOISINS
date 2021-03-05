@@ -32,6 +32,9 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private boolean isFavorite;
 
+    /** Key for isFavorite **/
+    public static final String FAVORITE_KEY = "isFavorite";
+
 
     /**
      * Create and return a new instance
@@ -41,7 +44,7 @@ public class NeighbourFragment extends Fragment {
     public static NeighbourFragment newInstance(boolean isFavorite) {
         NeighbourFragment fragment = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isFavorite", isFavorite);
+        bundle.putBoolean(FAVORITE_KEY, isFavorite);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,8 +53,8 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        if (getArguments() != null && getArguments().containsKey("isFavorite")) {
-            isFavorite = getArguments().getBoolean("isFavorite");
+        if (getArguments() != null && getArguments().containsKey(FAVORITE_KEY)) {
+            isFavorite = getArguments().getBoolean(FAVORITE_KEY);
         }
 
     }

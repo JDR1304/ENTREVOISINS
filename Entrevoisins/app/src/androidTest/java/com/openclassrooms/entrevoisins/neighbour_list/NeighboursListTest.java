@@ -5,6 +5,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.contrib.ViewPagerActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -33,7 +34,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.openclassrooms.entrevoisins.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNull.notNullValue;
-
 
 
 /**
@@ -82,29 +82,29 @@ public class NeighboursListTest {
         onView(allOf(withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(ITEMS_COUNT));
         // When perform a click on a delete icon
         onView(allOf(withId(R.id.list_neighbours), isDisplayed()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1,new DeleteViewAction()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
         // Then : the number of element is 11
-        onView(allOf(withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(ITEMS_COUNT-1));
+        onView(allOf(withId(R.id.list_neighbours), isDisplayed())).check(withItemCount(ITEMS_COUNT - 1));
 
     }
     // Test JDR
+
     /**
-     * Test if the activity profil is launch vérifiant que lorsqu’on clique sur un élément de la liste, l’écran de
-     * détails est bien lancé ;
+     * Test if the activity profil is launched
      */
     @Test
-    public void clickOnItemForDetails () {
+    public void clickOnItemForDetails() {
 
         onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.profil_activity_first_name)).check(matches(isDisplayed()));
     }
+
     /**
-     * test vérifiant qu’au démarrage de ce nouvel écran, le TextView indiquant
-     * le nom de l’utilisateur en question est bien rempli ;
+     * Test in the activity profil if the name textView of id 1 match with the String "Caroline"
      */
     @Test
-    public void checkTheName (){
+    public void checkTheName() {
         onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.profil_activity_first_name)).check(matches(withText("Caroline")));
@@ -112,20 +112,23 @@ public class NeighboursListTest {
     }
 
     /**
-     * test vérifiant que l’onglet Favoris n’affiche que les voisins marqués comme
-     * favoris.
+     * Test check in the tab favorites if we have favorites neighbours
      */
     @Test
-    public void checkFavorites(){
+    public void checkFavorites() {
         onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
         onView(withId(R.id.profil_activity_fab))
                 .perform(click());
-        onView(withId(R.id.collapsingToolbar))
+        onView(allOf(withContentDescription("Navigate up"), isDisplayed()))
                 .perform(click());
-        //onView((withId(R.id.tabs)
-                /*allOf(withContentDescription("Favorites"),
-                childAtPosition(childAtPosition(withId(R.id.tabs),0),1),
-                isDisplayed()));*/
+        onView(allOf(withContentDescription("Favorites"), isDisplayed()))
+                .perform(click());
+        onView(allOf(withId(R.id.list_neighbours), isDisplayed()))
+                .check(withItemCount(1));
+        onView(allOf(ViewMatchers.withId(R.id.list_neighbours), isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.profil_activity_first_name))
+                .check(matches(withText("Jack")));
     }
 }
