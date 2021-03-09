@@ -37,13 +37,15 @@ public class DummyNeighbourApiService implements NeighbourApiService {
 
     @Override
     public Neighbour getNeighbourById(long id) {
-        int i =0;
-        while(id != neighbours.get(i).getId()){
-            i++;
+        Neighbour neighbour = null;
+        for (int i = 0; i < neighbours.size(); i++) {
+            if (id == neighbours.get(i).getId()) {
+                neighbour = neighbours.get(i);
+            }
         }
-        return neighbours.get(i);
+        return neighbour;
     }
-
+    
     /**
      * {@inheritDoc}
      */
